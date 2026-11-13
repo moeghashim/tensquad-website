@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArRouteImport } from './routes/ar'
 import { Route as InterviewRouteImport } from './routes/interview'
+import { Route as ApiPetraRouteImport } from './routes/api/petra'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const InterviewRoute = InterviewRouteImport.update({
   path: '/interview',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPetraRoute = ApiPetraRouteImport.update({
+  id: '/api/petra',
+  path: '/api/petra',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ar': typeof ArRoute
   '/interview': typeof InterviewRoute
+  '/api/petra': typeof ApiPetraRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ar': typeof ArRoute
   '/interview': typeof InterviewRoute
+  '/api/petra': typeof ApiPetraRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/ar': typeof ArRoute
   '/interview': typeof InterviewRoute
+  '/api/petra': typeof ApiPetraRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ar' | '/interview'
+  fullPaths: '/' | '/ar' | '/interview' | '/api/petra'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ar' | '/interview'
-  id: '__root__' | '/' | '/ar' | '/interview'
+  to: '/' | '/ar' | '/interview' | '/api/petra'
+  id: '__root__' | '/' | '/ar' | '/interview' | '/api/petra'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ArRoute: typeof ArRoute
   InterviewRoute: typeof InterviewRoute
+  ApiPetraRoute: typeof ApiPetraRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InterviewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/petra': {
+      id: '/api/petra'
+      path: '/api/petra'
+      fullPath: '/api/petra'
+      preLoaderRoute: typeof ApiPetraRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ArRoute: ArRoute,
   InterviewRoute: InterviewRoute,
+  ApiPetraRoute: ApiPetraRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

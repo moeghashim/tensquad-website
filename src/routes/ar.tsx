@@ -1,9 +1,17 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Home } from '../components/home/Home'
+import { copy } from '../components/home/copy'
 
 export const Route = createFileRoute('/ar')({
-  component: ArabicHome,
+  head: () => ({
+    meta: [
+      { title: copy.ar.meta.title },
+      { name: 'description', content: copy.ar.meta.description },
+    ],
+  }),
+  component: HomeArabic,
 })
 
-function ArabicHome() {
-  return <h1>Tensquads — العربية</h1>
+function HomeArabic() {
+  return <Home locale="ar" />
 }

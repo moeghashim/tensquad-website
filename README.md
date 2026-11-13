@@ -37,6 +37,15 @@ pnpm dev
 
 `.dev.vars` is git-ignored and is only read by local tooling.
 
+## Petra interview (`/interview`)
+
+The onboarding interview has two layers that share one state:
+
+- **Scripted** (`src/components/interview/Interview.tsx`): the design's six steps, copy (EN and AR) and squad rules, always available.
+- **Generative** (OpenUI): `POST /api/petra` (`src/routes/api/petra.ts`) streams Claude's [OpenUI Lang](https://openui.com) output for each step (`claude-haiku-5-5`). The browser renders it with `@openuidev/react-lang` using the components in `src/components/interview/openui-library.tsx`. Those components are the design's own pieces, so the screen looks the same.
+
+If `ANTHROPIC_API_KEY` is missing (503) or any turn fails, the page silently stays on the scripted layer. `?lang=ar` serves the Arabic version. The server-side prompt and validation live in `src/lib/petra.ts`. The request body is capped at 16 KB and 12 answers.
+
 ## Deploy
 
 ```sh

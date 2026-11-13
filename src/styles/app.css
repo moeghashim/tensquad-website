@@ -14,3 +14,32 @@ input:focus{outline:none}
 @keyframes ti-in{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
 @keyframes ti-blink{50%{opacity:0}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+.ti-exit{white-space:nowrap;height:34px;padding:0 14px;border-radius:999px;background:rgba(13,13,13,.06);color:#0d0d0d;text-decoration:none;font-size:13px;font-weight:500;display:inline-flex;align-items:center}
+.ti-exit:hover{background:rgba(13,13,13,.12)}
+.ti-cta{height:46px;padding:0 22px;border-radius:999px;background:#181818;color:#fff;text-decoration:none;font-size:15px;font-weight:500;display:inline-flex;align-items:center}
+.ti-cta:hover{background:#000}
+.ti-again{height:46px;padding:0 20px;border:0;border-radius:999px;background:rgba(13,13,13,.06);color:#0d0d0d;font-size:15px;font-weight:500}
+.ti-again:hover{background:rgba(13,13,13,.12)}
+
+/* Homepage (src/components/home). Hover states that inline styles cannot express.
+   Each hover rule repeats its base colour so the global a:hover colour cannot override it. */
+.hm-navlink{color:#414141;text-decoration:none;font-size:14px;font-weight:500;padding:8px 12px;border-radius:8px;white-space:nowrap}
+.hm-navlink:hover{background:rgba(13,13,13,.06);color:#0d0d0d}
+.hm-navlink-ar{font-family:'IBM Plex Sans Arabic',Inter,system-ui,sans-serif;letter-spacing:0}
+.hm-start{white-space:nowrap;flex:none;height:38px;padding:0 16px;font-size:14px;background:#181818;color:#fff;text-decoration:none;display:inline-flex;align-items:center;border-radius:999px;font-weight:500}
+.hm-start:hover{background:#000;color:#fff}
+.hm-cta-dark{height:46px;padding:0 22px;font-size:15px;background:#181818;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:8px;border-radius:999px;font-weight:500}
+.hm-cta-dark:hover{background:#000;color:#fff}
+.hm-tile{transform:var(--tilt);transition:transform .25s cubic-bezier(.3,1.4,.5,1)}
+.hm-tile:hover{transform:translateY(-6px) rotate(0deg)}
+.hm-plan{height:42px;padding:0 18px;font-size:14px;margin-top:auto;background:rgba(13,13,13,.06);color:#0d0d0d;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;font-weight:500}
+.hm-plan:hover{background:rgba(13,13,13,.12);color:#0d0d0d}
+.hm-plan-dark{height:42px;padding:0 18px;font-size:14px;margin-top:auto;background:#fff;color:#0d0d0d;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;font-weight:500}
+.hm-plan-dark:hover{background:#ededed;color:#0d0d0d}
+.hm-gs{height:46px;padding:0 22px;border-radius:999px;background:#fff;color:#0d0d0d;font-size:15px;font-weight:500;text-decoration:none;display:inline-flex;align-items:center}
+.hm-gs:hover{background:#ededed;color:#0d0d0d}
+.hm-gs-ghost{background:rgba(255,255,255,.12);color:#fff}
+.hm-gs-ghost:hover{background:rgba(255,255,255,.2);color:#fff}
+.hm-foot-link{color:#5d5d5d;text-decoration:none;font-size:13px}
+.hm-foot-link:hover{color:#0d0d0d}
+@media (min-width:900px){.ti-side{position:sticky;top:24px}}
