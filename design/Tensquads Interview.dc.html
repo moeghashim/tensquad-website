@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#fcfcfc}
+a{color:#0169cc}a:hover{color:#004f99}
+button,input{font-family:inherit}
+button{cursor:pointer}
+a:focus-visible,button:focus-visible{outline:2px solid #0169cc;outline-offset:2px}
+input:focus{outline:none}
+@keyframes ti-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4%)}}
+@keyframes ti-in{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+@keyframes ti-blink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</helmet>
+<div dir="{{ dir }}" style="min-height:100vh;box-sizing:border-box;background:#fcfcfc;color:#282828;font-family:Inter,'IBM Plex Sans Arabic',system-ui,sans-serif;font-size:15px;line-height:22px;display:flex;flex-direction:column">
+
+  <header style="padding:14px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+    <a href="{{ homeHref }}" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#0d0d0d">
+      <img src="logo/logo.svg" alt="" width="30" height="30">
+      <span style="font-weight:600;font-size:15px">tensquads</span>
+    </a>
+    <div style="display:flex;gap:6px;align-items:center;margin-inline-start:auto">
+      <sc-for list="{{ dots }}" as="d" hint-placeholder-count="6"><span style="height:6px;border-radius:999px;transition:width .3s,background .3s;width:{{ d.w }};background:{{ d.bg }}"></span></sc-for>
+    </div>
+    <a href="{{ homeHref }}" style="white-space:nowrap;height:34px;padding:0 14px;border-radius:999px;background:rgba(13,13,13,.06);color:#0d0d0d;text-decoration:none;font-size:13px;font-weight:500;display:inline-flex;align-items:center" style-hover="background:rgba(13,13,13,.12)">{{ t.exit }}</a>
+  </header>
+
+  <main style="flex:1;padding:24px 24px 56px;display:flex;align-items:center">
+    <div style="width:100%;max-width:1120px;margin:0 auto;display:flex;flex-wrap:wrap-reverse;gap:32px 56px;align-items:{{ rowAlign }}">
+
+      <div style="flex:1 1 400px;min-width:0;display:flex;flex-direction:column;gap:20px">
+        <sc-for list="{{ hist }}" as="x" hint-placeholder-count="0">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-size:14px;line-height:20px;color:#767676">{{ x.q }}</span>
+            <div style="display:flex;justify-content:flex-end"><span style="max-width:85%;padding:8px 14px;border-radius:18px;background:#ededed;color:#0d0d0d;font-size:14px;line-height:20px">{{ x.a }}</span></div>
+          </div>
+        </sc-for>
+
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="width:44px;height:44px;flex:none;border-radius:12px;background:#FBD8D0 url(mascots/svg/petra.svg) center bottom / auto 40px no-repeat"></span>
+          <span style="font-size:13px;color:#5d5d5d"><strong style="color:#0d0d0d;font-weight:600">{{ t.petra }}</strong> · {{ t.master }}</span>
+          <span style="margin-inline-start:auto;font-family:'JetBrains Mono',monospace;font-size:12px;color:#767676">{{ stepLabel }}</span>
+        </div>
+        <div style="font-size:clamp(24px,3vw,36px);line-height:1.3;font-weight:600;color:#0d0d0d;min-height:2.6em;text-wrap:pretty">{{ qTyped }}{{ caret }}</div>
+
+        <div style="display:flex;flex-direction:column;gap:14px;transition:opacity .35s;opacity:{{ ansOp }};pointer-events:{{ ansPE }}">
+          <sc-if value="{{ hasChips }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <sc-for list="{{ chips }}" as="c" hint-placeholder-count="4">
+                <button onClick="{{ c.pick }}" aria-pressed="{{ c.pressed }}" style="min-height:42px;padding:8px 16px;border:0;border-radius:999px;font-size:15px;font-weight:500;text-align:start;transition:background .15s,color .15s;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isText }}" hint-placeholder-val="{{ true }}">
+            <div style="background:#fff;border-radius:20px;box-shadow:0 0 0 1px rgba(13,13,13,.1),0 12px 32px rgba(13,13,13,.06);padding:8px 8px 8px 18px;padding-inline:18px 8px;display:flex;align-items:center;gap:8px">
+              <input value="{{ draft }}" onChange="{{ onDraft }}" onKeyDown="{{ onKey }}" placeholder="{{ ph }}" aria-label="{{ ph }}" style="flex:1;min-width:0;border:0;background:transparent;font-size:17px;line-height:26px;color:#0d0d0d;padding:8px 0">
+              <button onClick="{{ send }}" aria-label="{{ t.send }}" style="width:44px;height:44px;flex:none;border:0;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;transition:background .15s;background:{{ sendBg }};color:#fff">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V3M4 7l4-4 4 4"></path></svg>
+              </button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isMulti }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+              <button onClick="{{ send }}" style="height:46px;padding:0 22px;border:0;border-radius:999px;font-size:15px;font-weight:500;color:#fff;transition:background .15s;background:{{ sendBg }}">{{ t.next }}</button>
+              <span style="font-size:13px;color:#767676">{{ pickedLabel }}</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isFinal }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <div style="background:#fff;border-radius:16px;box-shadow:0 0 0 1px rgba(13,13,13,.08);padding:6px 16px">
+                <sc-for list="{{ team }}" as="m" hint-placeholder-count="4">
+                  <div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-top:{{ m.bt }}">
+                    <span style="width:40px;height:40px;flex:none;border-radius:10px;background:{{ m.bg }}"></span>
+                    <div style="min-width:0;flex:1;display:flex;flex-direction:column">
+                      <span style="font-size:15px;font-weight:600;color:#0d0d0d">{{ m.name }}</span>
+                      <span style="font-size:13px;line-height:18px;color:#5d5d5d">{{ m.does }}</span>
+                    </div>
+                    <span style="flex:none;font-size:12px;font-weight:500;color:#5d5d5d">{{ m.role }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="font-size:14px;color:#414141">{{ modeLine }}</div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+                <a href="#" style="height:46px;padding:0 22px;border-radius:999px;background:#181818;color:#fff;text-decoration:none;font-size:15px;font-weight:500;display:inline-flex;align-items:center" style-hover="background:#000">{{ t.start }}</a>
+                <button onClick="{{ restart }}" style="height:46px;padding:0 20px;border:0;border-radius:999px;background:rgba(13,13,13,.06);color:#0d0d0d;font-size:15px;font-weight:500" style-hover="background:rgba(13,13,13,.12)">{{ t.again }}</button>
+              </div>
+              <span style="font-size:13px;color:#767676">{{ t.fine }}</span>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <div style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;align-items:center;gap:8px;position:sticky;top:24px">
+        <div style="position:relative;width:100%;max-width:min(440px,max(240px,calc(100vh - 260px)));aspect-ratio:1">
+          <div style="position:absolute;inset:10%;border-radius:50%;background:#f3f3f3;box-shadow:inset 0 0 0 1px rgba(13,13,13,.06)"></div>
+          <img src="mascots/svg/petra.svg" alt="" style="position:absolute;left:36%;top:32%;width:28%;animation:ti-bob 2.6s ease-in-out infinite">
+          <sc-for list="{{ seats }}" as="s" hint-placeholder-count="12">
+            <div style="position:absolute;width:12%;aspect-ratio:300/370;transform:translate(-50%,-50%);left:{{ s.x }};top:{{ s.y }}">
+              <span style="position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px;border-radius:999px;background:rgba(13,13,13,.14);transition:opacity .3s;opacity:{{ s.dotOp }}"></span>
+              <div role="img" aria-label="{{ s.name }}" style="position:absolute;inset:0;transition:transform .6s cubic-bezier(.3,1.5,.5,1),opacity .4s;background:{{ s.bg }};transform:{{ s.tf }};opacity:{{ s.op }}"></div>
+              <span style="position:absolute;left:50%;top:100%;transform:translateX(-50%);white-space:nowrap;font-size:11px;line-height:13px;font-weight:600;color:#0d0d0d;transition:opacity .4s;opacity:{{ s.op }}">{{ s.name }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <span style="margin-top:16px;font-size:13px;font-weight:500;color:#5d5d5d">{{ squadLabel }}</span>
+      </div>
+
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;language&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;'auto'|'en'|'ar'&quot;}}">
+class Component extends DCLogic {
+  state = { step: 0, ans: {}, draft: '', sel: [], n: 0, joined: [] };
+  componentDidMount() { this.iv = setInterval(() => { const q = this.q(); if (this.state.n < q.length) this.setState(s => ({ n: Math.min(q.length, s.n + 2) })); }, 22); }
+  componentWillUnmount() { clearInterval(this.iv); }
+  ar() { const l = this.props.language ?? 'auto'; return l === 'ar' || (l === 'auto' && /[?&]lang=ar/.test(window.location.search)); }
+  T() {
+    return this.ar() ? {
+      petra: 'بترا', master: 'القائدة', exit: 'خروج', send: 'إرسال', next: 'متابعة', start: 'ابدأ مجانًا لمدة 14 يومًا', again: 'ابدأ من جديد', fine: 'بدون بطاقة ائتمان · الإلغاء من لوحة التحكم',
+      of: (a, b) => a + ' / ' + b, picked: n => n ? 'اخترت ' + n : 'اختر واحدًا على الأقل', joined: l => 'انضم إلى الطاولة: ' + l.join('، ') + '. ',
+      squad: n => n ? 'بترا و' + n + ' من الزملاء حول الطاولة' : 'بترا بانتظار فريقك', ph: ['اسمك', '', 'مثال: خزف يدوي الصنع على Etsy'],
+      q: [() => 'مرحبًا، أنا بترا. أنا من يجمع الفِرق. أولًا، بماذا أناديك؟', a => 'سعدت بلقائك يا ' + a.name + '. هل عملك جديد أم قائم بالفعل؟', a => a.kind === 'new' ? 'ماذا تريد أن تبيع، ولمن؟' : 'ماذا تبيع، ولمن؟', a => a.kind === 'new' ? 'أين تنوي البيع؟ اختر كل ما ينطبق.' : 'أين تبيع؟ اختر كل ما ينطبق.', () => 'ما الذي يأخذ معظم أسبوعك؟ اختر ما تشاء.', () => 'السؤال الأخير. كم يفعل الفريق دون أن يسألك أولًا؟', a => 'هذا كل ما أحتاجه يا ' + a.name + '. هذا فريقك.'],
+      kind: [['new', 'عمل جديد'], ['existing', 'عمل قائم']],
+      what: ['قهوة نوى التمر، خالية من الكافيين', 'خزف يدوي الصنع على Etsy', 'علامة ملابس بالطباعة عند الطلب'],
+      channels: [['site', 'موقعي الخاص'], ['shopify', 'Shopify'], ['etsy', 'Etsy'], ['amazon', 'Amazon'], ['insta', 'Instagram'], ['shop', 'متجر فعلي']],
+      pains: [['pisa', 'تعبئة وشحن الطلبات'], ['kyoto', 'الرد على العملاء'], ['rio', 'الإعلانات ووسائل التواصل'], ['zurich', 'المحاسبة'], ['giza', 'المخزون والمورّدون'], ['alexandria', 'قوائم المنتجات'], ['delphi', 'معرفة الأرقام'], ['sydney', 'التوظيف'], ['machu', 'متابعة المنافسين']],
+      mode: [['ask', 'اسألني أولًا عن كل شيء'], ['some', 'الأمور الصغيرة وحدهم، والباقي بسؤالي'], ['auto', 'نفّذوا ثم أخبروني']],
+      modeLine: { ask: 'سيسألك الفريق قبل كل إجراء.', some: 'سيتولى الفريق الأمور الصغيرة وحده ويسألك عن الباقي.', auto: 'سينفّذ الفريق العمل ويخبرك بعد ذلك.' },
+      ag: { petra: ['بترا', 'القائدة', 'تستلم كل طلب وتوزّعه على الزميل المناسب'], machu: ['ماتشو', 'أبحاث السوق', 'يدرس المنافسين وأسعارهم'], alexandria: ['الإسكندرية', 'الكتالوج', 'تحافظ على صحة المنتجات والأسعار'], angkor: ['أنغكور', 'بناء المواقع', 'يبني صفحاتك قسمًا بعد قسم'], venice: ['البندقية', 'القنوات', 'تدرج منتجاتك في كل قناة بيع'], rio: ['ريو', 'التسويق', 'يدير الإعلانات ووسائل التواصل والبريد'], giza: ['الجيزة', 'المخزون', 'تعدّ المخزون وتتواصل مع المورّدين'], pisa: ['بيزا', 'الطلبات', 'يستلم الطلبات ويشحنها ويتولى المرتجعات'], kyoto: ['كيوتو', 'الدعم', 'تردّ على بريد العملاء'], zurich: ['زيورخ', 'المالية', 'يراقب المدفوعات والتكاليف والأرباح'], delphi: ['دلفي', 'التحليلات', 'تكتب التقارير والملخص الأسبوعي'], greenwich: ['غرينتش', 'الأماكن', 'يُبقي عملك صحيحًا على الخرائط'], sydney: ['سيدني', 'الموظفون', 'توظّف وتدير التهيئة'] }
+    } : {
+      petra: 'Petra', master: 'Master', exit: 'Exit', send: 'Send', next: 'Continue', start: 'Start free for 14 days', again: 'Start over', fine: 'No credit card · Cancel from the dashboard',
+      of: (a, b) => a + ' / ' + b, picked: n => n ? n + ' picked' : 'Pick at least one', joined: l => (l.length > 1 ? l.slice(0, -1).join(', ') + ' and ' + l[l.length - 1] : l[0]) + ' joined the table. ',
+      squad: n => n ? 'Petra and ' + n + (n === 1 ? ' squadmate' : ' squadmates') + ' at the table' : 'Petra is waiting for your squad', ph: ['Your name', '', 'e.g. Handmade ceramics on Etsy'],
+      q: [() => "Hi, I'm Petra. I put squads together. First, what should I call you?", a => 'Good to meet you, ' + a.name + '. Is this a new business, or one that is already running?', a => a.kind === 'new' ? 'What do you want to sell, and to whom?' : 'What do you sell, and to whom?', a => a.kind === 'new' ? 'Where do you plan to sell it? Pick every place that applies.' : 'Where do you sell it? Pick every place that applies.', () => 'What takes up most of your week? Pick as many as you like.', () => 'Last one. How much should the squad do without asking you first?', a => 'That is all I need, ' + a.name + '. Here is your squad.'],
+      kind: [['new', 'New business'], ['existing', 'Existing business']],
+      what: ['Date-seed coffee, caffeine-free', 'Handmade ceramics on Etsy', 'A print-on-demand streetwear brand'],
+      channels: [['site', 'My own website'], ['shopify', 'Shopify'], ['etsy', 'Etsy'], ['amazon', 'Amazon'], ['insta', 'Instagram'], ['shop', 'A physical shop']],
+      pains: [['pisa', 'Packing and shipping orders'], ['kyoto', 'Answering customers'], ['rio', 'Ads and social'], ['zurich', 'Bookkeeping'], ['giza', 'Stock and suppliers'], ['alexandria', 'Product listings'], ['delphi', 'Knowing the numbers'], ['sydney', 'Hiring'], ['machu', 'Watching competitors']],
+      mode: [['ask', 'Ask me first on everything'], ['some', 'Small things alone, ask for the rest'], ['auto', 'Run it and tell me after']],
+      modeLine: { ask: 'The squad will ask before every action.', some: 'The squad will handle small things alone and ask you for the rest.', auto: 'The squad will run the work and tell you after.' },
+      ag: { petra: ['Petra', 'Master', 'Takes every request and hands it to the right squadmate'], machu: ['Machu', 'Market researcher', 'Studies competitors and their prices'], alexandria: ['Alexandria', 'Catalog', 'Keeps products and prices correct'], angkor: ['Angkor', 'Website builder', 'Builds your pages one section at a time'], venice: ['Venice', 'Channels', 'Lists your products on every sales channel'], rio: ['Rio', 'Marketing', 'Runs ads, social and email'], giza: ['Giza', 'Inventory', 'Counts stock and talks to suppliers'], pisa: ['Pisa', 'Orders', 'Takes orders, ships them and handles returns'], kyoto: ['Kyoto', 'Support', 'Answers the customer inbox'], zurich: ['Zurich', 'Finance', 'Watches payouts, costs and profit'], delphi: ['Delphi', 'Analytics', 'Writes the reports and the weekly digest'], greenwich: ['Greenwich', 'Places', 'Keeps the business correct on every map'], sydney: ['Sydney', 'People', 'Hires and runs onboarding'] }
+    };
+  }
+  squad(a, step) {
+    const s = [], add = id => { if (!s.includes(id)) s.push(id); };
+    if (a.kind === 'new') { add('machu'); add('angkor'); }
+    if (a.channels) { add('pisa'); if (a.channels.includes('site')) add('angkor'); if (a.channels.includes('shop')) add('greenwich'); if (a.channels.length > 1) add('venice'); }
+    (a.pains || []).forEach(add);
+    if (step >= 6 && s.length < 2) { add('pisa'); add('kyoto'); }
+    return s;
+  }
+  q() { const t = this.T(), s = this.state; const j = s.joined.length ? t.joined(s.joined.map(id => t.ag[id][0])) : ''; return j + t.q[s.step](s.ans); }
+  submit(key, val) {
+    this.setState(s => { const ans = { ...s.ans, [key]: val }, step = s.step + 1; const before = this.squad(s.ans, s.step), after = this.squad(ans, step); return { ans, step, draft: '', sel: [], n: 0, joined: after.filter(x => !before.includes(x)) }; });
+  }
+  renderVals() {
+    const h = React.createElement, t = this.T(), s = this.state, ar = this.ar();
+    const keys = ['name', 'kind', 'what', 'channels', 'pains', 'mode'], key = keys[s.step];
+    const q = this.q(), ready = s.n >= q.length;
+    const isText = key === 'name' || key === 'what', isMulti = key === 'channels' || key === 'pains', isFinal = s.step >= 6;
+    const opts = key === 'what' ? t.what.map(x => [x, x]) : (t[key] && key !== 'name' ? t[key] : []);
+    const chips = opts.map(([id, label]) => {
+      const on = isMulti && s.sel.includes(id);
+      return { label, pressed: on ? 'true' : 'false', bg: on ? '#181818' : 'rgba(13,13,13,.06)', fg: on ? '#fff' : '#0d0d0d', pick: () => key === 'what' ? this.setState({ draft: id }) : isMulti ? this.setState(p => ({ sel: p.sel.includes(id) ? p.sel.filter(x => x !== id) : [...p.sel, id] })) : this.submit(key, id) };
+    });
+    const canSend = isText ? s.draft.trim().length > 0 : s.sel.length > 0;
+    const send = () => { if (!canSend) return; if (isText) this.submit(key, s.draft.trim()); else this.submit(key, s.sel); };
+    const label = (k, v) => k === 'name' || k === 'what' ? v : Array.isArray(v) ? v.map(id => (t[k].find(o => o[0] === id) || [0, id])[1]).join(ar ? '، ' : ', ') : (t[k].find(o => o[0] === v) || [0, v])[1];
+    const hist = keys.slice(0, Math.min(s.step, 6)).map((k, i) => ({ q: t.q[i](s.ans), a: label(k, s.ans[k]) })).slice(isFinal ? 6 : -2);
+    const sq = this.squad(s.ans, s.step);
+    const ring = ['machu', 'alexandria', 'angkor', 'venice', 'rio', 'giza', 'pisa', 'kyoto', 'zurich', 'delphi', 'greenwich', 'sydney'];
+    const light = { petra: '#FBD8D0', machu: '#D3F0DF', alexandria: '#D9DBFF', angkor: '#FFE7AE', venice: '#FFD6F0', rio: '#E6DBFF', giza: '#FFE1C4', pisa: '#DCE8FF', kyoto: '#FFD3C7', zurich: '#EEF1F6', delphi: '#E8F2C9', greenwich: '#F6FBC4', sydney: '#D4F1FB' };
+    const seats = ring.map((id, i) => { const ang = (-75 + 30 * i) * Math.PI / 180, on = sq.includes(id); return { name: t.ag[id][0], x: (50 + 40 * Math.cos(ang)) + '%', y: (50 + 40 * Math.sin(ang)) + '%', bg: 'url(mascots/svg/' + id + '.svg) center / contain no-repeat', tf: on ? 'scale(1)' : 'scale(.3)', op: on ? 1 : 0, dotOp: on ? 0 : 1 }; });
+    return {
+      t, dir: ar ? 'rtl' : 'ltr', homeHref: ar ? 'Tensquads%20Home%20AR.dc.html' : 'Tensquads%20Home.dc.html',
+      dots: keys.map((k, i) => ({ w: i === s.step ? '24px' : '6px', bg: i <= s.step ? '#181818' : 'rgba(13,13,13,.16)' })),
+      stepLabel: isFinal ? '' : t.of(s.step + 1, 6),
+      qTyped: q.slice(0, s.n),
+      caret: ready ? null : h('span', { style: { display: 'inline-block', width: 2, height: '1em', marginInlineStart: 2, verticalAlign: '-0.12em', background: '#0d0d0d', animation: 'ti-blink 1s steps(1) infinite' } }),
+      ansOp: ready ? 1 : 0, ansPE: ready ? 'auto' : 'none',
+      rowAlign: isFinal ? 'flex-end' : 'center', hasChips: chips.length > 0, chips, isText, isMulti, isFinal,
+      draft: s.draft, onDraft: e => this.setState({ draft: e.target.value }), onKey: e => { if (e.key === 'Enter') send(); },
+      ph: t.ph[s.step] || '', send, sendBg: canSend ? '#181818' : '#afafaf',
+      pickedLabel: t.picked(s.sel.length),
+      hist, seats, squadLabel: t.squad(sq.length),
+      team: ['petra', ...sq].map((id, i) => ({ name: t.ag[id][0], role: t.ag[id][1], does: t.ag[id][2], bt: i ? '1px solid rgba(13,13,13,.06)' : '0', bg: light[id] + ' url(mascots/svg/' + id + '.svg) center bottom / auto 36px no-repeat' })),
+      modeLine: t.modeLine[s.ans.mode] || '',
+      restart: () => this.setState({ step: 0, ans: {}, draft: '', sel: [], n: 0, joined: [] })
+    };
+  }
+}
+</script>
+</body>
+</html>

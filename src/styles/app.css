@@ -1,0 +1,16 @@
+body{margin:0;background:#fcfcfc}
+a{color:#0169cc}a:hover{color:#004f99}
+button,input{font-family:inherit}
+button{cursor:pointer}
+a:focus-visible,button:focus-visible{outline:2px solid #0169cc;outline-offset:2px}
+input:focus{outline:none}
+@keyframes ts-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5%)}}
+@keyframes ts-pk{from{left:var(--fx);top:var(--fy);opacity:1}85%{opacity:1}to{left:var(--tx);top:var(--ty);opacity:0}}
+@keyframes ts-dash{to{stroke-dashoffset:-12}}
+@keyframes ts-pop{from{transform:translateY(6px);opacity:0}to{transform:none;opacity:1}}
+@keyframes ts-blink{50%{opacity:0}}
+@keyframes ts-halo{0%{transform:translate(-50%,-50%) scale(.7);opacity:.9}100%{transform:translate(-50%,-50%) scale(1.5);opacity:0}}
+@keyframes ti-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4%)}}
+@keyframes ti-in{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+@keyframes ti-blink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
