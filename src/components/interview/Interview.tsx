@@ -15,7 +15,7 @@ import {
   type Locale,
   type StepKey,
 } from './data'
-import { interviewLibrary } from './openui-library'
+import { getInterviewLibrary } from './openui-library'
 import {
   Choices,
   ContinueBar,
@@ -30,7 +30,8 @@ import {
 
 // Parses a finished live turn on the client, so the stream-end check does not
 // depend on when the renderer's callbacks run.
-const turnParser = createParser(interviewLibrary.toJSONSchema(), 'Ask')
+let parser: ReturnType<typeof createParser> | undefined
+const getTurnParser = () => (parser ??= createParser(getInterviewLibrary().toJSONSchema(), 'Ask'))
 
 /**
  * Petra's interview. Starts scripted (the design's own flow) and switches to
@@ -93,7 +94,7 @@ export function Interview({ locale }: { locale: Locale }) {
         }
         acc += decoder.decode()
         setLiveText(acc)
-        if (!turnParser.parse(acc).root) throw new Error('no root')
+        if (!getTurnParser().parse(acc).root) throw new Error('no root')
         setStreaming(false)
       } catch {
         if (ac.signal.aborted) return
@@ -258,7 +259,7 @@ export function Interview({ locale }: { locale: Locale }) {
     mode === 'live' && liveText !== null ? (
       <Renderer
         response={liveText}
-        library={interviewLibrary}
+        library={getInterviewLibrary()}
         isStreaming={streaming}
         onAction={onLiveAction}
         onParseResult={onParse}

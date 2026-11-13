@@ -149,9 +149,17 @@ const Ask = defineComponent({
   },
 })
 
-export const interviewLibrary = createLibrary({
-  root: 'Ask',
-  components: [Ask, Choices, MultiChoices, TextAnswer, Squad],
-})
+// Built lazily: createLibrary generates a random id, which Cloudflare Workers
+// forbids at module (global) scope.
+let library: ReturnType<typeof buildLibrary> | undefined
+function buildLibrary() {
+  return createLibrary({
+    root: 'Ask',
+    components: [Ask, Choices, MultiChoices, TextAnswer, Squad],
+  })
+}
+export function getInterviewLibrary() {
+  return (library ??= buildLibrary())
+}
 
 export const ACTION_ANSWER = 'answer'

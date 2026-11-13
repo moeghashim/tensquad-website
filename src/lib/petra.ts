@@ -2,7 +2,7 @@
 // builds the system prompt from the OpenUI library, and streams Claude's
 // OpenUI Lang output back as plain text.
 import Anthropic from '@anthropic-ai/sdk'
-import { interviewLibrary } from '../components/interview/openui-library'
+import { getInterviewLibrary } from '../components/interview/openui-library'
 import {
   AGENT_IDS,
   RING,
@@ -133,7 +133,7 @@ const EXAMPLES = [
 ]
 
 export function buildSystemPrompt(locale: Locale): string {
-  return interviewLibrary.prompt({
+  return getInterviewLibrary().prompt({
     preamble: buildPersona(locale),
     additionalRules: [
       'Every argument is positional. Omit join only as the last argument of Ask.',
