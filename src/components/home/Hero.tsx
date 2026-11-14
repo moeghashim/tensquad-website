@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react'
 import { ALL, MASTER, WORKERS, WORKER_POS, mascot } from './agents'
 import { agentText, useHome } from './context'
 import { HeroScreens } from './HeroScreens'
@@ -15,6 +14,26 @@ const STATUS = {
 
 const N = WORKERS.length
 
+// Geometry for the table SVG (viewBox 0..100). Seats sit on the rim at radius 44.
+const RIM_R = 44
+const seatAngle = (i: number) => ((-75 + 30 * i) * Math.PI) / 180
+const polar = (r: number, a: number) => `${(50 + r * Math.cos(a)).toFixed(2)} ${(50 + r * Math.sin(a)).toFixed(2)}`
+// Each seat owns a 30deg stretch of rim; leave a gap either side so segments read as twelve.
+const RIM_ARCS = WORKERS.map((_, i) => {
+  const a = seatAngle(i)
+  const h = (11 * Math.PI) / 180
+  return `M ${polar(RIM_R, a - h)} A ${RIM_R} ${RIM_R} 0 0 1 ${polar(RIM_R, a + h)}`
+})
+// Curved link from Petra's edge to just short of the seat, bowing clockwise.
+const LINKS = WORKERS.map((_, i) => {
+  const a = seatAngle(i)
+  const bow = (9 * Math.PI) / 180
+  const from = polar(13, a - bow * 2.2)
+  const ctrl = polar(28, a - bow)
+  const to = polar(RIM_R - 8, a)
+  return `M ${from} Q ${ctrl} ${to}`
+})
+
 export function Hero() {
   const { c, isAr, ls, lh, href } = useHome()
   const { t, fs, stickTop, sc, loopRef, colRef } = useHeroLoop()
@@ -26,7 +45,6 @@ export function Hero() {
   const half = intro ? 0 : (t - 2) % 2
   const doneCount = intro ? 0 : finished ? N : step + (half ? 1 : 0)
   const cur = !fs && !intro && !finished ? WORKERS[step] : null
-  const curPos = cur ? WORKER_POS[step] : null
 
   // Focus (scroll-driven): fs = 1..13 picks one of ALL.
   const F = fs ? ALL[fs - 1] : null
@@ -83,7 +101,7 @@ export function Hero() {
       <div
         style={{
           position: 'absolute',
-          inset: '10%',
+          inset: '6%',
           borderRadius: '50%',
           background: F ? F.light : '#f3f3f3',
           transition: 'background 1s ease',
@@ -92,27 +110,54 @@ export function Hero() {
         }}
       />
       {!fs && (
-        <svg viewBox="0 0 100 100" aria-hidden="true" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', animation: 'ts-fade .8s ease 1.1s backwards' }}>
-          {WORKERS.map((a, i) => {
-            const on = cur === a
-            const dn = i < doneCount
-            const p = WORKER_POS[i]
-            return (
-              <line
+        <svg viewBox="0 0 100 100" aria-hidden="true" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', overflow: 'visible' }}>
+          {/* Rim: each seat's stretch of the table edge fills with its colour once the job is done. */}
+          <circle cx={50} cy={50} r={RIM_R} fill="none" stroke="rgba(13,13,13,.07)" strokeWidth={2} vectorEffect="non-scaling-stroke" />
+          {WORKERS.map((a, i) =>
+            i < doneCount ? (
+              <path
                 key={a.slug}
-                x1={50}
-                y1={50}
-                x2={p.x}
-                y2={p.y}
-                stroke={on ? a.deep : dn ? a.base : '#cdcdcd'}
-                strokeWidth={on ? 2 : 1.5}
-                vectorEffect="non-scaling-stroke"
-                strokeDasharray={on ? '4 8' : undefined}
+                d={RIM_ARCS[i]}
+                pathLength={100}
+                fill="none"
+                stroke={a.base}
+                strokeWidth={0.5}
                 strokeLinecap="round"
-                style={on ? { animation: 'ts-dash .6s linear infinite' } : undefined}
+                strokeDasharray="100 100"
+                style={{ animation: 'ts-draw .7s cubic-bezier(.3,0,.2,1) backwards' }}
               />
-            )
-          })}
+            ) : null,
+          )}
+          {/* Link: one curved line from Petra to whoever is working, with a comet for the handoff and the report. */}
+          {cur && (
+            <g key={`link${step}`}>
+              <path
+                d={LINKS[step]}
+                pathLength={100}
+                fill="none"
+                stroke={cur.base}
+                strokeWidth={0.28}
+                strokeLinecap="round"
+                strokeDasharray="100 100"
+                style={{ animation: 'ts-draw .55s cubic-bezier(.3,0,.2,1) backwards' }}
+              />
+              <path
+                key={`comet${t}`}
+                d={LINKS[step]}
+                pathLength={100}
+                fill="none"
+                stroke={cur.deep}
+                strokeWidth={0.75}
+                strokeLinecap="round"
+                strokeDasharray="10 200"
+                style={{
+                  opacity: 0,
+                  filter: `drop-shadow(0 0 .6px ${cur.base})`,
+                  animation: `${half ? 'ts-comet-in' : 'ts-comet-out'} .85s cubic-bezier(.5,0,.25,1) ${half ? '.05s' : '.35s'} both`,
+                }}
+              />
+            </g>
+          )}
         </svg>
       )}
       {WORKERS.map((a, i) => {
@@ -221,30 +266,6 @@ export function Hero() {
           animation: 'ts-bob 2.6s ease-in-out .8s infinite, ts-rise .8s cubic-bezier(.2,.9,.25,1.2) backwards',
         }}
       />
-      {cur && curPos && (
-        <span
-          key={`pk${t}`}
-          style={
-            {
-              position: 'absolute',
-              width: 14,
-              height: 14,
-              margin: -7,
-              borderRadius: 999,
-              background: cur.deep,
-              boxShadow: '0 0 0 3px #fff',
-              zIndex: 4,
-              '--fx': half ? `${curPos.x}%` : '50%',
-              '--fy': half ? `${curPos.y}%` : '50%',
-              '--tx': half ? '50%' : `${curPos.x}%`,
-              '--ty': half ? '50%' : `${curPos.y}%`,
-              left: 'var(--fx)',
-              top: 'var(--fy)',
-              animation: 'ts-pk .8s cubic-bezier(.4,0,.2,1) forwards',
-            } as CSSProperties
-          }
-        />
-      )}
     </>
   )
 

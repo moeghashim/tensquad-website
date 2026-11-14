@@ -35,10 +35,10 @@ export interface Position {
   y: number
 }
 
-// Worker i sits on a circle of radius 40 around (50, 50), starting at -75deg, 30deg apart.
+// Worker i sits on a circle of radius 44 around (50, 50), starting at -75deg, 30deg apart.
 export const WORKER_POS: Position[] = WORKERS.map((_, i) => {
   const ang = ((-75 + 30 * i) * Math.PI) / 180
-  return { x: 50 + 40 * Math.cos(ang), y: 50 + 40 * Math.sin(ang) }
+  return { x: 50 + 44 * Math.cos(ang), y: 50 + 44 * Math.sin(ang) }
 })
 
 export const mascot = (slug: string) => `/mascots/svg/${slug}.svg`
