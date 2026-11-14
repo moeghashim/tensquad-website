@@ -8,10 +8,10 @@ import { Nav } from './Nav'
 import { Pricing } from './Pricing'
 import { Squad } from './Squad'
 import { HomeContext, makeCtx } from './context'
-import type { Locale } from './copy'
+import type { Locale } from '../../lib/locale'
 
-// One homepage for both languages. The locale picks copy, direction and a few
-// typography tweaks; the layout and logic are shared.
+// One homepage component for both builds. The locale (fixed at build time) picks
+// direction and a few typography tweaks; the copy comes from copy.ts.
 export function Home({ locale }: { locale: Locale }) {
   const ctx = useMemo(() => makeCtx(locale), [locale])
   const { isAr } = ctx

@@ -9,4 +9,8 @@ export default defineConfig({
     tanstackStart(),
     viteReact(),
   ],
+  build: {
+    // Source maps embed sourcesContent, which would ship the other locale's copy in dist/.
+    sourcemap: false,
+  },
 })

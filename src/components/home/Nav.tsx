@@ -1,9 +1,7 @@
 import { useHome } from './context'
 
 export function Nav() {
-  const { c, isAr, href } = useHome()
-  const home = isAr ? '/ar' : '/'
-  const otherLang = isAr ? '/' : '/ar'
+  const { c, href } = useHome()
   return (
     <nav
       aria-label={c.aria.site}
@@ -28,7 +26,7 @@ export function Nav() {
         }}
       >
         <a
-          href={home}
+          href="/"
           style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', color: '#0d0d0d', marginInlineEnd: 8 }}
         >
           <img src="/logo/logo.svg" alt="" width={30} height={30} />
@@ -41,15 +39,6 @@ export function Nav() {
           <a href="#pricing" className="hm-navlink">{c.nav.pricing}</a>
         </div>
         <div style={{ marginInlineStart: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>
-          {isAr ? (
-            <a href={otherLang} className="hm-navlink">
-              {c.nav.switchLabel}
-            </a>
-          ) : (
-            <a href={otherLang} lang="ar" className="hm-navlink hm-navlink-ar">
-              {c.nav.switchLabel}
-            </a>
-          )}
           <a href="#" className="hm-navlink">{c.nav.signIn}</a>
           <a href={href('start')} className="hm-start">{c.nav.start}</a>
         </div>

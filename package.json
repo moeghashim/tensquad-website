@@ -9,11 +9,17 @@
   },
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build && tsc --noEmit",
-    "preview": "vite preview",
-    "deploy": "pnpm build && wrangler deploy",
-    "cf-typegen": "wrangler types",
-    "typecheck": "tsc --noEmit"
+    "dev:ar": "VITE_SITE_LOCALE=ar CLOUDFLARE_ENV=ar vite dev",
+    "build:en": "VITE_SITE_LOCALE=en vite build",
+    "build:ar": "VITE_SITE_LOCALE=ar CLOUDFLARE_ENV=ar vite build",
+    "build": "pnpm build:en && pnpm typecheck",
+    "deploy:en": "pnpm build:en && wrangler deploy",
+    "deploy:ar": "pnpm build:ar && wrangler deploy",
+    "deploy": "pnpm deploy:en && pnpm deploy:ar",
+    "preview": "pnpm build:en && vite preview",
+    "preview:ar": "pnpm build:ar && vite preview",
+    "typecheck": "tsc --noEmit",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.8.0",

@@ -1,13 +1,12 @@
 import { useHome } from './context'
 
 export function Footer() {
-  const { c, isAr } = useHome()
-  const home = isAr ? '/ar' : '/'
+  const { c } = useHome()
   return (
     <footer style={{ borderTop: '1px solid rgba(13,13,13,.06)', padding: '40px 24px 32px' }}>
       <div style={{ maxWidth: 1440, margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: 32, justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, maxWidth: 260 }}>
-          <a href={home} style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, color: '#0d0d0d', textDecoration: 'none' }}>
+          <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, color: '#0d0d0d', textDecoration: 'none' }}>
             <img src="/logo/logo.svg" alt="" width={24} height={24} />
             tensquads
           </a>

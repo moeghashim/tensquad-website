@@ -1,17 +1,18 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Home } from '../components/home/Home'
 import { copy } from '../components/home/copy'
+import { LOCALE } from '../lib/locale'
 
 export const Route = createFileRoute('/')({
   head: () => ({
     meta: [
-      { title: copy.en.meta.title },
-      { name: 'description', content: copy.en.meta.description },
+      { title: copy.meta.title },
+      { name: 'description', content: copy.meta.description },
     ],
   }),
-  component: HomeEnglish,
+  component: HomePage,
 })
 
-function HomeEnglish() {
-  return <Home locale="en" />
+function HomePage() {
+  return <Home locale={LOCALE} />
 }

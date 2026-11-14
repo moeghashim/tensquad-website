@@ -1,7 +1,14 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
+  // Top level is the English site (deployed as "tensquads-website"; keep this name).
+  // env.ar is the Arabic site: same code, built with VITE_SITE_LOCALE=ar and CLOUDFLARE_ENV=ar.
   "name": "tensquads-website",
   "compatibility_date": "2026-11-01",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "@tanstack/react-start/server-entry"
+  "main": "@tanstack/react-start/server-entry",
+  "env": {
+    "ar": {
+      "name": "tensquads-website-ar"
+    }
+  }
 }

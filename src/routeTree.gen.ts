@@ -10,18 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ArRouteImport } from './routes/ar'
 import { Route as InterviewRouteImport } from './routes/interview'
 import { Route as ApiPetraRouteImport } from './routes/api/petra'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ArRoute = ArRouteImport.update({
-  id: '/ar',
-  path: '/ar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InterviewRoute = InterviewRouteImport.update({
@@ -37,34 +31,30 @@ const ApiPetraRoute = ApiPetraRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/ar': typeof ArRoute
   '/interview': typeof InterviewRoute
   '/api/petra': typeof ApiPetraRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/ar': typeof ArRoute
   '/interview': typeof InterviewRoute
   '/api/petra': typeof ApiPetraRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/ar': typeof ArRoute
   '/interview': typeof InterviewRoute
   '/api/petra': typeof ApiPetraRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ar' | '/interview' | '/api/petra'
+  fullPaths: '/' | '/interview' | '/api/petra'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ar' | '/interview' | '/api/petra'
-  id: '__root__' | '/' | '/ar' | '/interview' | '/api/petra'
+  to: '/' | '/interview' | '/api/petra'
+  id: '__root__' | '/' | '/interview' | '/api/petra'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ArRoute: typeof ArRoute
   InterviewRoute: typeof InterviewRoute
   ApiPetraRoute: typeof ApiPetraRoute
 }
@@ -76,13 +66,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ar': {
-      id: '/ar'
-      path: '/ar'
-      fullPath: '/ar'
-      preLoaderRoute: typeof ArRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/interview': {
@@ -104,7 +87,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ArRoute: ArRoute,
   InterviewRoute: InterviewRoute,
   ApiPetraRoute: ApiPetraRoute,
 }

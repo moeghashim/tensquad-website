@@ -10,7 +10,8 @@
 import { useContext, useState } from 'react'
 import { createLibrary, defineComponent, useTriggerAction } from '@openuidev/react-lang'
 import { z } from 'zod/v4'
-import { AGENT_IDS, copyFor } from './data'
+import { LOCALE } from '../../lib/locale'
+import { AGENT_IDS, copy } from './data'
 import {
   AnswerContext,
   Choices as ChoicesView,
@@ -54,8 +55,6 @@ const MultiChoices = defineComponent({
   }),
   component: ({ props }) => {
     const ctx = useContext(AnswerContext)
-    const { locale } = useContext(InterviewContext)
-    const copy = copyFor(locale)
     const [selected, setSelected] = useState<string[]>([])
     const toggle = (value: string) =>
       setSelected((s) => (s.includes(value) ? s.filter((x) => x !== value) : [...s, value]))
@@ -68,7 +67,7 @@ const MultiChoices = defineComponent({
           picked={copy.picked(selected.length)}
           canSend={selected.length > 0}
           onSend={() => {
-            if (selected.length && ctx) ctx.answer(selected, labels.join(locale === 'ar' ? '، ' : ', '))
+            if (selected.length && ctx) ctx.answer(selected, labels.join(LOCALE === 'ar' ? '، ' : ', '))
           }}
         />
       </>
@@ -86,8 +85,6 @@ const TextAnswer = defineComponent({
   }),
   component: ({ props }) => {
     const ctx = useContext(AnswerContext)
-    const { locale } = useContext(InterviewContext)
-    const copy = copyFor(locale)
     const [draft, setDraft] = useState('')
     const value = draft.trim()
     const send = () => {
@@ -117,8 +114,7 @@ const Squad = defineComponent({
     members: z.array(AgentId).optional().describe('Squadmates Petra recruits, besides Petra'),
   }),
   component: ({ props }) => {
-    const { locale, team, restart } = useContext(InterviewContext)
-    const copy = copyFor(locale)
+    const { team, restart } = useContext(InterviewContext)
     return <TeamPanel team={team} copy={copy} modeLine={copy.modeLine[props.mode]} onRestart={restart} />
   },
 })

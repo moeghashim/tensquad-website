@@ -4,7 +4,7 @@ import {
   STEP_KEYS,
   answerMap,
   collectNominations,
-  copyFor,
+  copy,
   isAgentId,
   labelFor,
   normaliseValue,
@@ -12,7 +12,6 @@ import {
   union,
   type Answer,
   type AgentId,
-  type Locale,
   type StepKey,
 } from './data'
 import { getInterviewLibrary } from './openui-library'
@@ -39,9 +38,7 @@ const getTurnParser = () => (parser ??= createParser(getInterviewLibrary().toJSO
  * the scripted flow for the rest of the session. Both layers share one state:
  * the list of answers.
  */
-export function Interview({ locale }: { locale: Locale }) {
-  const copy = copyFor(locale)
-
+export function Interview() {
   const [answers, setAnswers] = useState<Answer[]>([])
   const [nominated, setNominated] = useState<AgentId[]>([])
   const [joinedNow, setJoinedNow] = useState<AgentId[]>([])
@@ -75,7 +72,6 @@ export function Interview({ locale }: { locale: Locale }) {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({
-            locale,
             answers: next.map((a) => ({ key: a.key, value: a.value })),
             table: union(ruleSquad(answerMap(next), next.length), nominatedRef.current).filter((id) => id !== 'petra'),
           }),
@@ -104,7 +100,7 @@ export function Interview({ locale }: { locale: Locale }) {
         setStreaming(false)
       }
     },
-    [locale],
+    [],
   )
 
   // Probe on mount. Until it answers, the scripted first question is shown.
@@ -121,7 +117,7 @@ export function Interview({ locale }: { locale: Locale }) {
   const commit = useCallback(
     (key: StepKey, value: string | string[], question: string) => {
       const before = ruleSquad(answerMap(answersRef.current), answersRef.current.length)
-      const next = [...answersRef.current, { key, value, label: labelFor(locale, key, value), question }]
+      const next = [...answersRef.current, { key, value, label: labelFor(key, value), question }]
       const after = ruleSquad(answerMap(next), next.length)
       setJoinedNow(after.filter((x) => !before.includes(x)))
       setAnswers(next)
@@ -130,7 +126,7 @@ export function Interview({ locale }: { locale: Locale }) {
       setSel([])
       if (!liveDown.current) requestTurn(next)
     },
-    [locale, requestTurn],
+    [requestTurn],
   )
 
   /** Answer from a live (OpenUI) input. The key and question come from the current step. */
@@ -140,12 +136,12 @@ export function Interview({ locale }: { locale: Locale }) {
       const current = answersRef.current.length
       const key = STEP_KEYS[current]
       if (!key) return
-      const value = normaliseValue(locale, key, event.params.value)
+      const value = normaliseValue(key, event.params.value)
       if (value === null) return
       const question = typeof event.params.question === 'string' ? event.params.question.slice(0, 300) : ''
       commit(key, value, question)
     },
-    [locale, commit],
+    [commit],
   )
 
   const onParse = useCallback(
@@ -271,7 +267,7 @@ export function Interview({ locale }: { locale: Locale }) {
     )
 
   return (
-    <InterviewContext.Provider value={{ locale, team, restart }}>
+    <InterviewContext.Provider value={{ team, restart }}>
       <Frame
         copy={copy}
         dots={dots}

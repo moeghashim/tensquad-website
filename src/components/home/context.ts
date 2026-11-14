@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
-import type { Copy, Locale } from './copy'
-import { copy } from './copy'
+import { LOCALE, type Locale } from '../../lib/locale'
+import { copy, type Copy } from './copy'
 
 export interface HomeCtx {
   locale: Locale
@@ -18,19 +18,19 @@ export function makeCtx(locale: Locale): HomeCtx {
   return {
     locale,
     isAr,
-    c: copy[locale],
+    c: copy,
     ls: (en) => (isAr ? '0' : en),
     lh: (en, ar) => (isAr ? ar : en),
     href: (path) => {
       // Onboarding CTAs go to the interview; in-page anchors pass through; placeholders stay '#'.
-      if (path === 'start') return isAr ? '/interview?lang=ar' : '/interview'
+      if (path === 'start') return '/interview'
       if (path.startsWith('#')) return path
       return '#'
     },
   }
 }
 
-export const HomeContext = createContext<HomeCtx>(makeCtx('en'))
+export const HomeContext = createContext<HomeCtx>(makeCtx(LOCALE))
 
 export function useHome() {
   return useContext(HomeContext)

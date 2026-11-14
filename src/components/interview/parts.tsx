@@ -2,7 +2,8 @@
 // flow (Interview.tsx) and the OpenUI renderers (openui-library.tsx), so the
 // live layer keeps the exact design styles. No window access during render.
 import { createContext, useEffect, useLayoutEffect, useState, type CSSProperties, type ReactNode } from 'react'
-import { LIGHT, mascotSrc, type AgentId, type Copy, type Locale } from './data'
+import { DIR } from '../../lib/locale'
+import { LIGHT, mascotSrc, type AgentId, type Copy } from './data'
 
 // Runs after DOM mutations on the client; a no-op effect on the server.
 export const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
@@ -29,12 +30,10 @@ export function useTyped(text: string, step = 2, speed = 22) {
 
 /** Team and actions shared by the final squad panel, scripted or live. */
 export interface InterviewContextValue {
-  locale: Locale
   team: AgentId[]
   restart: () => void
 }
 export const InterviewContext = createContext<InterviewContextValue>({
-  locale: 'en',
   team: ['petra'],
   restart: () => {},
 })
@@ -81,7 +80,7 @@ export function Frame({
 }) {
   return (
     <div
-      dir={copy.dir}
+      dir={DIR}
       style={{
         minHeight: '100vh',
         boxSizing: 'border-box',
@@ -96,7 +95,7 @@ export function Frame({
     >
       <header style={{ padding: '14px 24px', display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
         <a
-          href={copy.homeHref}
+          href="/"
           style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', color: '#0d0d0d' }}
         >
           <img src="/logo/logo.svg" alt="" width={30} height={30} />
@@ -116,7 +115,7 @@ export function Frame({
             />
           ))}
         </div>
-        <a href={copy.homeHref} className="ti-exit">
+        <a href="/" className="ti-exit">
           {copy.exit}
         </a>
       </header>

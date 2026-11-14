@@ -25,7 +25,6 @@ input:focus{outline:none}
    Each hover rule repeats its base colour so the global a:hover colour cannot override it. */
 .hm-navlink{color:#414141;text-decoration:none;font-size:14px;font-weight:500;padding:8px 12px;border-radius:8px;white-space:nowrap}
 .hm-navlink:hover{background:rgba(13,13,13,.06);color:#0d0d0d}
-.hm-navlink-ar{font-family:'IBM Plex Sans Arabic',Inter,system-ui,sans-serif;letter-spacing:0}
 .hm-start{white-space:nowrap;flex:none;height:38px;padding:0 16px;font-size:14px;background:#181818;color:#fff;text-decoration:none;display:inline-flex;align-items:center;border-radius:999px;font-weight:500}
 .hm-start:hover{background:#000;color:#fff}
 .hm-cta-dark{height:46px;padding:0 22px;font-size:15px;background:#181818;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:8px;border-radius:999px;font-weight:500}
