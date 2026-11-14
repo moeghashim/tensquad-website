@@ -25,7 +25,6 @@ input:focus{outline:none}
    Each hover rule repeats its base colour so the global a:hover colour cannot override it. */
 /* Nav height, so the hero can slide under the transparent nav. */
 :root{--hm-nav-h:60px}
-@media (max-width:760px){:root{--hm-nav-h:93px}}
 
 /* Shared page gutter: the nav and the hero sit on the same edges. */
 .hm-wrap{box-sizing:border-box;width:100%;max-width:1440px;margin-inline:auto;padding-inline:clamp(20px,4vw,64px)}
@@ -43,9 +42,8 @@ input:focus{outline:none}
 .hm-start{white-space:nowrap;flex:none;height:32px;padding:0 14px;font-size:13.5px;background:#181818;color:#fff;text-decoration:none;display:inline-flex;align-items:center;border-radius:999px;font-weight:500;transition:background .15s ease}
 .hm-start:hover{background:#000;color:#fff}
 @media (max-width:760px){
-  .hm-nav-inner{height:auto;grid-template-columns:1fr auto;padding-block:10px;row-gap:4px}
-  .hm-nav-links{grid-column:1/-1;grid-row:2;overflow-x:auto;scrollbar-width:none;margin-inline:-11px}
-  .hm-nav-links::-webkit-scrollbar{display:none}
+  .hm-nav-inner{grid-template-columns:1fr auto}
+  .hm-nav-links{display:none}
 }
 
 /* Focus layer grid (scroll-driven agent stories): text column + product screens. */
@@ -53,6 +51,7 @@ input:focus{outline:none}
 @media (max-width:960px){.hm-hero-grid{grid-template-columns:minmax(0,1fr);gap:40px}}
 
 /* Hero stage: the round table is the hero. --S is the table's diameter. */
+.hm-hero-sec{position:relative;height:800vh;margin-top:calc(-1 * var(--hm-nav-h))}
 .hm-stage{position:sticky;box-sizing:border-box;min-height:100svh;padding:calc(var(--hm-nav-h) + 12px) 0 20px;overflow:hidden;display:flex}
 .hm-hero2{--gut:clamp(20px,4vw,64px);--S:min(calc(100vw - 2 * var(--gut)),calc(100svh - var(--hm-nav-h) - 72px),1080px);position:relative;flex:1;display:grid;place-items:center;transition:opacity .7s ease}
 .hm-aura{position:absolute;left:50%;top:calc(50% + var(--hm-nav-h) / 2);width:min(110vw,1300px);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);filter:blur(110px);pointer-events:none;transition:background 1.2s ease,opacity .9s ease;animation:ts-fade 1.6s ease .4s backwards}
@@ -95,6 +94,8 @@ input:focus{outline:none}
 /* Narrow or short screens: content stacks above a smaller table with Petra in the centre. */
 @media (max-width:899px),(max-height:619px){
   .hm-stage{padding-top:calc(var(--hm-nav-h) + 28px)}
+  .hm-ask{border-radius:20px;align-items:flex-start}
+  .hm-ask-text{white-space:normal;padding-block:3px;line-height:1.4}
   .hm-hero2{--S:min(calc(100vw - 2 * var(--gut)),560px);display:flex;flex-direction:column;align-items:center;gap:36px;padding-inline:var(--gut)}
   .hm-inner{order:-1;width:100%;max-width:560px;gap:14px}
   .hm-h1{font-size:clamp(36px,9.5vw,60px)}
@@ -103,7 +104,7 @@ input:focus{outline:none}
   .hm-seat{width:13%}
   .hm-seat-name{font-size:10.5px}
   .hm-chip{display:none}
-  .hm-ticker{display:inline-flex}
+  .hm-ticker{display:none}
   .hm-ask{width:auto;max-width:100%}
   .hm-fine{max-width:none}
 }
@@ -132,3 +133,11 @@ input:focus{outline:none}
 .hm-foot-link{color:#5d5d5d;text-decoration:none;font-size:13px}
 .hm-foot-link:hover{color:#0d0d0d}
 @media (min-width:900px){.ti-side{position:sticky;top:24px}}
+
+/* Phones: the hero is an ordinary section; no pinned stage, no scroll-driven agent stories. */
+@media (max-width:899px){
+  .hm-hero-sec{height:auto}
+  .hm-stage{position:relative;top:0!important;min-height:0;padding-bottom:48px;overflow-x:clip;overflow-y:visible}
+  .hm-aura{top:55%;opacity:.45!important}
+  .hm-focus{display:none}
+}

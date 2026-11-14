@@ -106,7 +106,7 @@ export function Hero() {
   )
 
   return (
-    <section ref={loopRef} aria-label={c.aria.hero} style={{ height: '800vh', position: 'relative', marginTop: 'calc(-1 * var(--hm-nav-h))' }}>
+    <section ref={loopRef} aria-label={c.aria.hero} className="hm-hero-sec">
       <div className="hm-stage" style={{ top: `${-stickTop}px` }}>
         {/* Aura behind the table: takes the colour of whoever is working. */}
         <div

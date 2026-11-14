@@ -27,10 +27,16 @@ export function useHeroLoop() {
   }, [s])
 
   useEffect(() => {
+    // Phones get a plain hero: no pinned stage and no scroll-driven agent stories (see .hm-hero-sec).
+    const mobile = window.matchMedia('(max-width: 899px)')
     const onScroll = () => {
       const el = loopRef.current
       if (!el) return
       const cur = latest.current
+      if (mobile.matches) {
+        if (cur.fs || cur.stickTop) setS((prev) => ({ ...prev, fs: 0, stickTop: 0 }))
+        return
+      }
       const vh = window.innerHeight
       let d = cur.stickTop
       if (!cur.fs) {
@@ -50,7 +56,9 @@ export function useHeroLoop() {
     onScroll()
     window.addEventListener('scroll', onScroll, true)
     window.addEventListener('resize', onScroll)
+    mobile.addEventListener('change', onScroll)
     return () => {
+      mobile.removeEventListener('change', onScroll)
       window.removeEventListener('scroll', onScroll, true)
       window.removeEventListener('resize', onScroll)
     }

@@ -4,7 +4,7 @@
 import { createContext, useEffect, useLayoutEffect, useState, type CSSProperties, type ReactNode } from 'react'
 import { DIR } from '../../lib/locale'
 import { LIGHT, mascotSrc, type AgentId, type Copy } from './data'
-import { BRAND, LOGO, logoSize } from '../../lib/brand'
+import { BRAND, LOGO, logoSize, wordSize } from '../../lib/brand'
 
 // Runs after DOM mutations on the client; a no-op effect on the server.
 export const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
@@ -99,8 +99,8 @@ export function Frame({
           href="/"
           style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', color: '#0d0d0d' }}
         >
-          <img src={LOGO.src} alt={LOGO.wordmark ? BRAND : ''} {...logoSize(28)} />
-          {!LOGO.wordmark && <span style={{ fontWeight: 600, fontSize: 15 }}>{BRAND}</span>}
+          <img src={LOGO.src} alt="" {...logoSize(28)} />
+          {LOGO.word ? <img src={LOGO.word.src} alt={BRAND} {...wordSize(28)} /> : <span style={{ fontWeight: 600, fontSize: 15 }}>{BRAND}</span>}
         </a>
         <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginInlineStart: 'auto' }}>
           {dots.map((d, i) => (
