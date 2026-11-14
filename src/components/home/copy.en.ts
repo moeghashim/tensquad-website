@@ -2,7 +2,7 @@
 
 export const en = {
   meta: {
-    title: 'Tensquads: A full squad for your success',
+    title: 'tensquads: A full squad for your success',
     description: 'A squad of AI agents for small businesses that sell things.',
   },
   aria: {
