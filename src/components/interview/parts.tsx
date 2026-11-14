@@ -4,7 +4,7 @@
 import { createContext, useEffect, useLayoutEffect, useState, type CSSProperties, type ReactNode } from 'react'
 import { DIR } from '../../lib/locale'
 import { LIGHT, mascotSrc, type AgentId, type Copy } from './data'
-import { BRAND } from '../../lib/brand'
+import { BRAND, LOGO } from '../../lib/brand'
 
 // Runs after DOM mutations on the client; a no-op effect on the server.
 export const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
@@ -99,7 +99,7 @@ export function Frame({
           href="/"
           style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', color: '#0d0d0d' }}
         >
-          <img src="/logo/logo.svg" alt="" width={30} height={30} />
+          <img src={LOGO.src} alt="" width={Math.round(28 * LOGO.ratio)} height={28} />
           <span style={{ fontWeight: 600, fontSize: 15 }}>{BRAND}</span>
         </a>
         <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginInlineStart: 'auto' }}>

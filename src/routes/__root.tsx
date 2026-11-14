@@ -3,7 +3,7 @@ import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 import appCss from '../styles/app.css?url'
 import { copy } from '../components/home/copy'
 import { DIR, LOCALE } from '../lib/locale'
-import { BRAND_TITLE } from '../lib/brand'
+import { BRAND_TITLE, FAVICON } from '../lib/brand'
 
 function RootDocument({ children }: { children: ReactNode }) {
   return (
@@ -28,7 +28,7 @@ export const Route = createRootRoute({
       { name: 'description', content: copy.meta.description },
     ],
     links: [
-      { rel: 'icon', type: 'image/svg+xml', href: '/logo/logo.svg' },
+      { rel: 'icon', type: 'image/svg+xml', href: FAVICON },
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
       {
         rel: 'stylesheet',

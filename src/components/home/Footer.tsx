@@ -1,5 +1,5 @@
 import { useHome } from './context'
-import { BRAND } from '../../lib/brand'
+import { BRAND, LOGO } from '../../lib/brand'
 
 export function Footer() {
   const { c } = useHome()
@@ -8,7 +8,7 @@ export function Footer() {
       <div style={{ maxWidth: 1440, margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: 32, justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, maxWidth: 260 }}>
           <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, color: '#0d0d0d', textDecoration: 'none' }}>
-            <img src="/logo/logo.svg" alt="" width={24} height={24} />
+            <img src={LOGO.src} alt="" width={Math.round(24 * LOGO.ratio)} height={24} />
             {BRAND}
           </a>
           <span style={{ fontSize: 13, color: '#5d5d5d' }}>{c.footer.tagline}</span>

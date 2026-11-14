@@ -8,9 +8,9 @@ export const EN: Copy = {
   exit: 'Exit',
   send: 'Send',
   next: 'Continue',
-  start: 'Start free for 14 days',
+  start: 'Get started',
   again: 'Start over',
-  fine: 'No credit card · Cancel from the dashboard',
+  fine: 'Cancel from the dashboard',
   ph: ['Your name', '', 'e.g. Handmade ceramics on Etsy'],
   kind: [
     ['new', 'New business'],

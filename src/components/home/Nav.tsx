@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useHome } from './context'
-import { BRAND } from '../../lib/brand'
+import { BRAND, LOGO } from '../../lib/brand'
 
 // Quiet nav: transparent over the hero, a hairline and frosted backdrop only once the page scrolls.
 export function Nav() {
@@ -18,7 +18,7 @@ export function Nav() {
     <nav aria-label={c.aria.site} className="hm-nav" data-scrolled={scrolled ? '' : undefined}>
       <div className="hm-nav-inner hm-wrap">
         <a href="/" className="hm-brand">
-          <img src="/logo/logo.svg" alt="" width={26} height={26} />
+          <img src={LOGO.src} alt="" width={Math.round(26 * LOGO.ratio)} height={26} />
           <span>{BRAND}</span>
         </a>
         <div className="hm-nav-links">

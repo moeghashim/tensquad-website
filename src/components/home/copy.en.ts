@@ -27,7 +27,7 @@ export const en = {
     youAsked: 'You asked',
     request: 'Launch the summer print drop on Friday',
     cta: 'Build my squad',
-    fine: 'Free for 14 days · No credit card · Cancel from the dashboard',
+    fine: 'Cancel from the dashboard',
     planning: 'Petra is planning',
     allDone: 'All 12 jobs done',
     jobsDone: (n: number) => `${n} of 12 jobs done`,
@@ -101,7 +101,7 @@ export const en = {
         price: '$49',
         blurb: 'One shop, a couple of agents, you still do most of the work.',
         features: ['Up to 3 agents', '1 squad', 'Ask-first mode on every action', 'Email support'],
-        cta: 'Start free',
+        cta: 'Get started',
         href: 'start',
       },
       {
@@ -110,7 +110,7 @@ export const en = {
         price: '$149',
         blurb: 'A running store that wants the daily work off its plate.',
         features: ['Up to 10 agents', '3 squads', 'Spend and refund limits', 'Agent traffic and audit log', 'Priority support'],
-        cta: 'Start free',
+        cta: 'Get started',
         href: 'start',
       },
       {
@@ -122,12 +122,12 @@ export const en = {
         href: 'contact',
       },
     ],
-    footnote: 'All plans start with 14 days free. Prices in USD, billed monthly.',
+    footnote: 'Prices in USD, billed monthly.',
   },
   getStarted: {
     title: 'Your first agent can be working by tonight',
     lead: 'Tell us about your business, pick a squad, set the limits. The master takes it from there.',
-    primary: 'Start free',
+    primary: 'Get started',
     secondary: 'See a live demo',
   },
   footer: {
