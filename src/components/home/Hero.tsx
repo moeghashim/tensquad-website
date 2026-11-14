@@ -349,20 +349,6 @@ export function Hero() {
                     </span>
                   ))}
                 </div>
-                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                  {ALL.map((a, i) => (
-                    <span
-                      key={a.slug}
-                      style={{
-                        height: 6,
-                        borderRadius: 999,
-                        transition: 'width .3s,background .3s',
-                        width: i === fs - 1 ? '24px' : '6px',
-                        background: i === fs - 1 ? '#181818' : 'rgba(13,13,13,.16)',
-                      }}
-                    />
-                  ))}
-                </div>
               </div>
               <div ref={colRef} style={{ minWidth: 0, position: 'relative', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div style={{ position: 'relative', flex: 'none', width: `${560 * sc}px`, height: `${440 * sc}px` }}>
