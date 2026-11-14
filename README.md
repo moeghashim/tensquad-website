@@ -53,7 +53,7 @@ Source maps are disabled in `vite.config.ts` because they embed the source text 
 | `pnpm preview:ar` | Build Arabic, then serve it locally |
 | `pnpm deploy:en` | `build:en` then `wrangler deploy` (Worker `tensquads-website`) |
 | `pnpm deploy:ar` | `build:ar` then `wrangler deploy` (Worker `tensquads-website-ar`) |
-| `pnpm deploy` | `deploy:en` then `deploy:ar` |
+| `pnpm deploy:all` | `deploy:en` then `deploy:ar` (not `pnpm deploy`, which is a pnpm built-in) |
 | `pnpm typecheck` | `tsc --noEmit` |
 | `pnpm cf-typegen` | Regenerate `worker-configuration.d.ts` from `wrangler.jsonc` |
 

@@ -37,41 +37,6 @@ export function Hero() {
   const fNum = String(fs || 1).padStart(2, '0')
   const fText = agentText(c, FV.slug)
 
-  // Card (who is talking, what they say, status chip).
-  const who = F ?? cur ?? MASTER
-  const whoText = agentText(c, who.slug)
-  const msg = F
-    ? (fText.done ?? c.hero.splitMsg)
-    : cur
-      ? half
-        ? (agentText(c, cur.slug).done ?? '')
-        : (agentText(c, cur.slug).doing ?? '')
-      : intro
-        ? c.hero.splitting
-        : c.hero.allDoneMsg
-  const st = F
-    ? STATUS.done
-    : cur
-      ? half
-        ? STATUS.done
-        : cur.ask
-          ? STATUS.waiting
-          : STATUS.running
-      : intro
-        ? STATUS.planning
-        : STATUS.done
-  const stLabel = F
-    ? c.hero.statusDone
-    : cur
-      ? half
-        ? c.hero.statusDone
-        : cur.ask
-          ? c.hero.statusWaiting
-          : c.hero.statusRunning
-      : intro
-        ? c.hero.statusPlanning
-        : c.hero.statusDone
-
   // Typing animation for the request line.
   const request = c.hero.request
   const typedN = t === 0 ? Math.ceil(request.length / 2) : request.length
@@ -94,7 +59,20 @@ export function Hero() {
       }
     })
     .reverse()
-    .slice(0, 3)
+
+  // Petra speaks in the feed while she plans and when the squad finishes.
+  const petraText = agentText(c, MASTER.slug)
+  const petraRow = (text: string, planning: boolean) => ({
+    key: `petra-${planning ? 'plan' : 'done'}`,
+    name: petraText.name,
+    role: petraText.role,
+    text,
+    status: planning ? c.hero.statusPlanning : c.hero.statusDone,
+    cbg: planning ? STATUS.planning.bg : STATUS.done.bg,
+    cfg: planning ? STATUS.planning.fg : STATUS.done.fg,
+    bg: `${MASTER.light} url(${mascot(MASTER.slug)}) center bottom / auto 32px no-repeat`,
+  })
+  const feedRows = (intro ? [petraRow(c.hero.splitting, true)] : finished ? [petraRow(c.hero.allDoneMsg, false), ...feed] : feed).slice(0, 3)
 
   const progressLabel = intro ? c.hero.planning : finished ? c.hero.allDone : c.hero.jobsDone(doneCount)
   const progressPct = `${Math.round((doneCount / N) * 100)}%`
@@ -110,10 +88,11 @@ export function Hero() {
           background: F ? F.light : '#f3f3f3',
           transition: 'background 1s ease',
           boxShadow: 'inset 0 0 0 1px rgba(13,13,13,.06)',
+          animation: 'ts-rise 1s cubic-bezier(.2,.9,.25,1) backwards',
         }}
       />
       {!fs && (
-        <svg viewBox="0 0 100 100" aria-hidden="true" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+        <svg viewBox="0 0 100 100" aria-hidden="true" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', animation: 'ts-fade .8s ease 1.1s backwards' }}>
           {WORKERS.map((a, i) => {
             const on = cur === a
             const dn = i < doneCount
@@ -155,6 +134,7 @@ export function Hero() {
                 'transform .4s cubic-bezier(.3,1.4,.5,1), opacity .7s ease, left 1.1s cubic-bezier(.4,0,.1,1), top 1.1s cubic-bezier(.4,0,.1,1), width 1.1s cubic-bezier(.4,0,.1,1)',
               opacity: fs ? (fo ? 1 : 0) : on || dn || finished || intro ? 1 : 0.55,
               zIndex: on ? 3 : 1,
+              animation: `ts-seat .95s cubic-bezier(.2,.9,.25,1.12) ${0.3 + i * 0.055}s backwards`,
             }}
           >
             {on && (
@@ -238,7 +218,7 @@ export function Hero() {
           transition:
             'left 1.1s cubic-bezier(.4,0,.1,1), top 1.1s cubic-bezier(.4,0,.1,1), width 1.1s cubic-bezier(.4,0,.1,1), opacity .7s ease',
           zIndex: 2,
-          animation: 'ts-bob 2.6s ease-in-out infinite',
+          animation: 'ts-bob 2.6s ease-in-out .8s infinite, ts-rise .8s cubic-bezier(.2,.9,.25,1.2) backwards',
         }}
       />
       {cur && curPos && (
@@ -268,111 +248,44 @@ export function Hero() {
     </>
   )
 
-  const card = (
-    <div
-      key={`card${step}-${half}`}
-      style={{
-        opacity: fs ? 0 : 1,
-        transition: 'opacity .7s ease',
-        width: '100%',
-        maxWidth: 440,
-        minHeight: 76,
-        boxSizing: 'border-box',
-        background: '#fff',
-        borderRadius: 16,
-        boxShadow: `0 0 0 2px ${who.base}`,
-        padding: '10px 16px 10px 10px',
-        display: 'flex',
-        gap: 12,
-        alignItems: 'center',
-        animation: 'ts-pop .3s ease-out',
-        textAlign: 'start',
-      }}
-    >
-      <span
-        style={{
-          width: 52,
-          height: 52,
-          flex: 'none',
-          borderRadius: 12,
-          background: who.light,
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'center',
-          overflow: 'hidden',
-        }}
-      >
-        <img src={mascot(who.slug)} alt="" style={{ height: 46 }} />
-      </span>
-      <div style={{ minWidth: 0, flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-          <span style={{ fontSize: 14, fontWeight: 600, color: '#0d0d0d' }}>{whoText.name}</span>
-          <span style={{ fontSize: 12, color: '#5d5d5d' }}>{whoText.role}</span>
-          <span
-            style={{
-              marginInlineStart: 'auto',
-              height: 22,
-              padding: '0 8px',
-              borderRadius: 999,
-              background: st.bg,
-              color: st.fg,
-              fontSize: 12,
-              fontWeight: 600,
-              display: 'inline-flex',
-              alignItems: 'center',
-            }}
-          >
-            {stLabel}
-          </span>
-        </div>
-        <div style={{ fontSize: 14, lineHeight: '20px', color: '#282828' }}>{msg}</div>
-      </div>
-    </div>
-  )
-
   return (
-    <section ref={loopRef} aria-label={c.aria.hero} style={{ height: '800vh', position: 'relative' }}>
+    <section ref={loopRef} aria-label={c.aria.hero} style={{ height: '800vh', position: 'relative', marginTop: 'calc(-1 * var(--hm-nav-h))' }}>
       <div
         style={{
           position: 'sticky',
           minHeight: '100vh',
           boxSizing: 'border-box',
-          padding: '76px 24px 40px',
+          // Slides under the transparent nav so the aura runs to the top edge.
+          padding: 'calc(var(--hm-nav-h) + clamp(16px,4vh,48px)) 0 40px',
           display: 'flex',
           alignItems: 'center',
           overflow: 'hidden',
           top: `${-stickTop}px`,
         }}
       >
+        {/* Aura: takes the colour of whoever is working, so the whole stage breathes with the squad. */}
         <div
+          aria-hidden="true"
           style={{
             position: 'absolute',
-            insetInlineEnd: '-8%',
-            top: '8%',
-            width: '58%',
+            insetInlineEnd: '-6%',
+            top: '50%',
+            width: 'min(64%, 980px)',
             aspectRatio: '1',
             borderRadius: '50%',
-            filter: 'blur(90px)',
+            transform: 'translateY(-50%)',
+            filter: 'blur(100px)',
             pointerEvents: 'none',
-            transition: 'background 1s ease,opacity .7s ease',
-            background: FV.light,
-            opacity: fs ? 0.75 : 0,
+            transition: 'background 1.2s ease,opacity .9s ease',
+            background: fs ? FV.light : (cur ?? MASTER).light,
+            opacity: fs ? 0.75 : 0.55,
+            animation: 'ts-fade 1.6s ease .4s backwards',
           }}
         />
-        <div
-          style={{
-            position: 'relative',
-            width: '100%',
-            maxWidth: 1440,
-            margin: '0 auto',
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '24px 32px',
-            alignItems: stickTop > 0 ? 'flex-end' : 'center',
-          }}
-        >
+        <div className="hm-wrap">
+        <div className="hm-hero-grid" style={{ alignItems: stickTop > 0 ? 'end' : 'center' }}>
           {/* Left: headline, request card, CTA, and the scroll-driven focus overlay. */}
-          <div style={{ flex: '1 1 340px', minWidth: 0, position: 'relative' }}>
+          <div style={{ minWidth: 0, position: 'relative' }}>
             <div
               style={{
                 display: 'flex',
@@ -387,7 +300,7 @@ export function Hero() {
               <h1
                 style={{
                   margin: 0,
-                  fontSize: 'clamp(40px,5.4vw,68px)',
+                  fontSize: 'clamp(40px,3.6vw + 20px,74px)',
                   lineHeight: lh(1.04, 1.3),
                   fontWeight: 700,
                   letterSpacing: ls('-0.035em'),
@@ -437,7 +350,7 @@ export function Hero() {
                     paddingTop: 12,
                   }}
                 >
-                  {feed.map((j) => (
+                  {feedRows.map((j) => (
                     <div key={j.key} style={{ display: 'flex', gap: 10, alignItems: 'center', minHeight: 40 }}>
                       <span style={{ width: 36, height: 36, flex: 'none', borderRadius: 10, background: j.bg }} />
                       <div style={{ minWidth: 0, flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -640,30 +553,11 @@ export function Hero() {
           {/* Right: the round table, the request card, and the scaled product mockups. */}
           <div
             ref={colRef}
-            style={{
-              flex: '1 1 380px',
-              minWidth: 0,
-              position: 'relative',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 12,
-            }}
+            style={{ minWidth: 0, position: 'relative', display: 'grid' }}
           >
-            <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                maxWidth: 'min(560px, max(260px, calc(100vh - 250px)))',
-                aspectRatio: '1',
-                marginBottom: 28,
-                opacity: fs ? 0 : 1,
-                transition: 'opacity .7s ease',
-              }}
-            >
+            <div className="hm-hero-table" style={{ opacity: fs ? 0 : 1, transition: 'opacity .7s ease' }}>
               {kids}
             </div>
-            {card}
             <div
               style={{
                 position: 'absolute',
@@ -691,6 +585,7 @@ export function Hero() {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </section>

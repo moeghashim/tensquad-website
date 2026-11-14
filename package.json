@@ -15,7 +15,7 @@
     "build": "pnpm build:en && pnpm typecheck",
     "deploy:en": "pnpm build:en && wrangler deploy",
     "deploy:ar": "pnpm build:ar && wrangler deploy",
-    "deploy": "pnpm deploy:en && pnpm deploy:ar",
+    "deploy:all": "pnpm run deploy:en && pnpm run deploy:ar",
     "preview": "pnpm build:en && vite preview",
     "preview:ar": "pnpm build:ar && vite preview",
     "typecheck": "tsc --noEmit",
