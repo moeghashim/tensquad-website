@@ -3,6 +3,7 @@ import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 import appCss from '../styles/app.css?url'
 import { copy } from '../components/home/copy'
 import { DIR, LOCALE } from '../lib/locale'
+import { BRAND_TITLE } from '../lib/brand'
 
 function RootDocument({ children }: { children: ReactNode }) {
   return (
@@ -23,7 +24,7 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'Tensquads' },
+      { title: BRAND_TITLE },
       { name: 'description', content: copy.meta.description },
     ],
     links: [

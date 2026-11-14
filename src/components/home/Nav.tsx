@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useHome } from './context'
+import { BRAND } from '../../lib/brand'
 
 // Quiet nav: transparent over the hero, a hairline and frosted backdrop only once the page scrolls.
 export function Nav() {
@@ -18,7 +19,7 @@ export function Nav() {
       <div className="hm-nav-inner hm-wrap">
         <a href="/" className="hm-brand">
           <img src="/logo/logo.svg" alt="" width={26} height={26} />
-          <span>tensquads</span>
+          <span>{BRAND}</span>
         </a>
         <div className="hm-nav-links">
           <a href="#squad" className="hm-navlink">{c.nav.agents}</a>

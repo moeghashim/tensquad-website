@@ -4,7 +4,7 @@ import type { Copy } from './copy.en'
 
 export const ar: Copy = {
   meta: {
-    title: 'Tensquads: فريق كامل من أجل نجاحك',
+    title: 'بنّاء: فريق كامل من أجل نجاحك',
     description: 'فريق من وكلاء الذكاء الاصطناعي للأعمال الصغيرة التي تبيع المنتجات.',
   },
   aria: {
@@ -144,7 +144,7 @@ export const ar: Copy = {
       privacy: 'الخصوصية',
       security: 'الأمان',
     },
-    copyright: '© 2026 tensquads. جميع الحقوق محفوظة.',
+    copyright: '© 2026 بنّاء. جميع الحقوق محفوظة.',
   },
   agents: {
     petra: { name: 'بترا', role: 'القائدة', why: 'تفتح الباب لكل مهمة. تستلم الطلب وتسلّم كل جزء للزميل المناسب.' },

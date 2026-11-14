@@ -16,8 +16,8 @@ const STATUS = {
 const N = WORKERS.length
 
 // Table geometry (SVG viewBox 0..100). Seats sit around the table at radius 44 (WORKER_POS);
-// the tabletop's edge, where progress and handoffs run, is at radius 37.
-const RIM_R = 37
+// the tabletop's edge, where progress and handoffs run, is at radius 35.
+const RIM_R = 35
 const seatDeg = (i: number) => -75 + 30 * i
 const rad = (d: number) => (d * Math.PI) / 180
 const pt = (r: number, d: number) => `${(50 + r * Math.cos(rad(d))).toFixed(2)} ${(50 + r * Math.sin(rad(d))).toFixed(2)}`
@@ -196,7 +196,7 @@ export function Hero() {
                     alt={`${tx.name}${c.hero.listSep}${tx.role}`}
                     style={{ position: 'relative', width: '100%', display: 'block', animation: `ts-bob ${on ? 0.7 : 3.2}s ease-in-out ${-i * 0.27}s infinite` }}
                   />
-                  <span className="hm-seat-name" style={{ background: on ? a.light : 'transparent' }}>
+                  <span className={`hm-seat-name ${p.y < 50 ? 'hm-seat-name-up' : ''}`} style={{ background: on ? a.light : 'transparent' }}>
                     {tx.name}
                   </span>
                   {dn && (
