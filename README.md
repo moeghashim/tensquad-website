@@ -15,7 +15,7 @@ The language is fixed at build time. There is no runtime language switching.
 
 - [TanStack Start](https://tanstack.com/start) (React 19, file-based routing via TanStack Router)
 - [Cloudflare Workers](https://developers.cloudflare.com/workers/) via `@cloudflare/vite-plugin`
-- Vite 8, TypeScript, pnpm 10 (Node 24)
+- Vite 8, TypeScript, pnpm 10 (Node 26 LTS, pinned to 26.13.1)
 
 ## Routes
 
@@ -78,10 +78,15 @@ Without the key, `/api/petra` returns 503 and the interview stays on its scripte
 
 ## Local development
 
+Install [mise](https://mise.jdx.dev/) if needed, then trust the project config and install its pinned Node version. This keeps Node 26 local to this repository.
+
 ```sh
-pnpm install
+mise trust
+mise install
+mise exec -- node --version  # v26.13.1
+mise exec -- pnpm install
 cp .dev.vars.example .dev.vars   # then fill in ANTHROPIC_API_KEY
-pnpm dev                         # or pnpm dev:ar
+mise exec -- pnpm dev            # or mise exec -- pnpm dev:ar
 ```
 
 `.dev.vars` is git-ignored and is only read by local tooling.
