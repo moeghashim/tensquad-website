@@ -3,7 +3,7 @@
 // live layer keeps the exact design styles. No window access during render.
 import { createContext, useEffect, useLayoutEffect, useState, type CSSProperties, type ReactNode } from 'react'
 import { DIR } from '../../lib/locale'
-import { LIGHT, mascotSrc, type AgentId, type Copy } from './data'
+import { LIGHT, copy as localeCopy, mascotSrc, type AgentId, type Copy } from './data'
 import { BRAND, LOGO, logoSize, wordSize } from '../../lib/brand'
 
 // Runs after DOM mutations on the client; a no-op effect on the server.
@@ -85,7 +85,7 @@ export function Frame({
       style={{
         minHeight: '100vh',
         boxSizing: 'border-box',
-        background: '#fcfcfc',
+        background: '#f4f4f3',
         color: '#282828',
         fontFamily: "Inter,'IBM Plex Sans Arabic',system-ui,sans-serif",
         fontSize: 15,
@@ -133,7 +133,19 @@ export function Frame({
             alignItems: rowAlign,
           }}
         >
-          <div style={{ flex: '1 1 400px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <div
+            style={{
+              flex: '1 1 400px',
+              minWidth: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 20,
+              background: '#fff',
+              borderRadius: 28,
+              boxShadow: '0 0 0 1px rgba(13,13,13,.05), 0 24px 60px -28px rgba(13,13,13,.14)',
+              padding: 'clamp(20px,3vw,36px)',
+            }}
+          >
             {history}
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <span
@@ -187,7 +199,7 @@ export function QuestionBlock({ text, children }: { text: string; children?: Rea
     <>
       <div
         style={{
-          fontSize: 'clamp(24px,3vw,36px)',
+          fontSize: 'clamp(22px,2.6vw,32px)',
           lineHeight: 1.3,
           fontWeight: 600,
           color: '#0d0d0d',
@@ -218,18 +230,39 @@ export function History({ items }: { items: Array<{ q: string; a: string }> }) {
   return (
     <>
       {items.map((x, i) => (
-        <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-          <span style={{ fontSize: 14, lineHeight: '20px', color: '#767676' }}>{x.q}</span>
+        <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'flex-start' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 500, color: '#5d5d5d' }}>
+              <img src={mascotSrc('petra')} alt="" width={16} height={20} style={{ objectFit: 'contain' }} />
+              {localeCopy.petra}
+            </span>
+            <span
+              style={{
+                maxWidth: '88%',
+                padding: '10px 16px',
+                borderRadius: 18,
+                borderStartStartRadius: 6,
+                background: '#f1f1f0',
+                color: '#282828',
+                fontSize: 15,
+                lineHeight: '22px',
+              }}
+            >
+              {x.q}
+            </span>
+          </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <span
               style={{
                 maxWidth: '85%',
-                padding: '8px 14px',
+                padding: '10px 16px',
                 borderRadius: 18,
-                background: '#ededed',
-                color: '#0d0d0d',
-                fontSize: 14,
-                lineHeight: '20px',
+                borderEndEndRadius: 6,
+                background: '#181818',
+                color: '#fff',
+                fontSize: 15,
+                lineHeight: '22px',
+                fontWeight: 500,
               }}
             >
               {x.a}
@@ -497,8 +530,8 @@ export function SeatRing({ squad, copy }: { squad: AgentId[]; copy: Copy }) {
           position: 'absolute',
           inset: '10%',
           borderRadius: '50%',
-          background: '#f3f3f3',
-          boxShadow: 'inset 0 0 0 1px rgba(13,13,13,.06)',
+          background: '#fff',
+          boxShadow: '0 0 0 1px rgba(13,13,13,.05), 0 30px 70px -36px rgba(13,13,13,.18)',
         }}
       />
       <img
