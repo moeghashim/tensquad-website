@@ -62,7 +62,6 @@ function Caret() {
 
 export function Frame({
   copy,
-  dots,
   stepLabel,
   history,
   stage,
@@ -71,7 +70,6 @@ export function Frame({
   squadLabel,
 }: {
   copy: Copy
-  dots: Array<{ w: string; bg: string }>
   stepLabel: string
   history: ReactNode
   stage: ReactNode
@@ -102,21 +100,7 @@ export function Frame({
           <img src={LOGO.src} alt="" {...logoSize(28)} />
           {LOGO.word ? <img src={LOGO.word.src} alt={BRAND} {...wordSize(28)} /> : <span style={{ fontWeight: 600, fontSize: 15 }}>{BRAND}</span>}
         </a>
-        <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginInlineStart: 'auto' }}>
-          {dots.map((d, i) => (
-            <span
-              key={i}
-              style={{
-                height: 6,
-                borderRadius: 999,
-                transition: 'width .3s, background .3s',
-                width: d.w,
-                background: d.bg,
-              }}
-            />
-          ))}
-        </div>
-        <a href="/" className="ti-exit">
+        <a href="/" className="ti-exit" style={{ marginInlineStart: 'auto' }}>
           {copy.exit}
         </a>
       </header>

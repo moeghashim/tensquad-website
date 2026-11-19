@@ -242,11 +242,6 @@ export function Interview() {
     )
   }
 
-  const dots = STEP_KEYS.map((_, i) => ({
-    w: i === step ? '24px' : '6px',
-    bg: i <= step ? '#181818' : 'rgba(13,13,13,.16)',
-  }))
-
   const history = isFinal
     ? null
     : answers.slice(-2).filter((a) => a.question).map((a) => ({ q: a.question, a: a.label }))
@@ -270,7 +265,6 @@ export function Interview() {
     <InterviewContext.Provider value={{ team, restart }}>
       <Frame
         copy={copy}
-        dots={dots}
         stepLabel={isFinal ? '' : copy.of(step + 1, STEP_KEYS.length)}
         history={history ? <History items={history} /> : null}
         stage={stage}
