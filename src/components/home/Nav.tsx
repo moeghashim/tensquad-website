@@ -26,6 +26,7 @@ export function Nav() {
           <a href="#how" className="hm-navlink">{c.nav.how}</a>
           <a href="#control" className="hm-navlink">{c.nav.control}</a>
           <a href="#pricing" className="hm-navlink">{c.nav.pricing}</a>
+          <a href={c.componentsUrl} target="_blank" rel="noopener" className="hm-navlink">{c.nav.components}</a>
         </div>
         <div className="hm-nav-actions">
           <a href="#" className="hm-navlink">{c.nav.signIn}</a>

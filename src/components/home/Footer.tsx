@@ -19,6 +19,7 @@ export function Footer() {
             <a href="#squad" className="hm-foot-link">{c.footer.links.agents}</a>
             <a href="#how" className="hm-foot-link">{c.footer.links.how}</a>
             <a href="#pricing" className="hm-foot-link">{c.footer.links.pricing}</a>
+            <a href={c.componentsUrl} target="_blank" rel="noopener" className="hm-foot-link">{c.footer.links.components}</a>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             <span style={{ fontSize: 12, fontWeight: 600, color: '#0d0d0d' }}>{c.footer.legal}</span>
