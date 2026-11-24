@@ -3,7 +3,7 @@ import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 import appCss from '../styles/app.css?url'
 import { copy } from '../components/home/copy'
 import { DIR, LOCALE } from '../lib/locale'
-import { BRAND_TITLE, FAVICON } from '../lib/brand'
+import { BRAND_TITLE, FAVICON, FAVICON_PNG, TOUCH_ICON } from '../lib/brand'
 
 function RootDocument({ children }: { children: ReactNode }) {
   return (
@@ -29,6 +29,8 @@ export const Route = createRootRoute({
     ],
     links: [
       { rel: 'icon', type: 'image/svg+xml', href: FAVICON },
+      ...(FAVICON_PNG ? [{ rel: 'icon', type: 'image/png', sizes: '32x32', href: FAVICON_PNG }] : []),
+      ...(TOUCH_ICON ? [{ rel: 'apple-touch-icon', href: TOUCH_ICON }] : []),
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
       {
         rel: 'stylesheet',

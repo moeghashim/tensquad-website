@@ -4,7 +4,7 @@
 import { createContext, useEffect, useLayoutEffect, useState, type CSSProperties, type ReactNode } from 'react'
 import { DIR } from '../../lib/locale'
 import { LIGHT, copy as localeCopy, mascotSrc, type AgentId, type Copy } from './data'
-import { BRAND, LOGO, logoSize, wordSize } from '../../lib/brand'
+import { BRAND, LOGO, LOGO_ALT, logoSize, wordSize } from '../../lib/brand'
 
 // Runs after DOM mutations on the client; a no-op effect on the server.
 export const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
@@ -97,8 +97,8 @@ export function Frame({
           href="/"
           style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', color: '#0d0d0d' }}
         >
-          <img src={LOGO.src} alt="" {...logoSize(28)} />
-          {LOGO.word ? <img src={LOGO.word.src} alt={BRAND} {...wordSize(28)} /> : <span style={{ fontWeight: 600, fontSize: 15 }}>{BRAND}</span>}
+          <img src={LOGO.src} alt={LOGO_ALT} {...logoSize(28)} />
+          {LOGO.word ? <img src={LOGO.word.src} alt={BRAND} {...wordSize(28)} /> : null}
         </a>
         <a href="/" className="ti-exit" style={{ marginInlineStart: 'auto' }}>
           {copy.exit}

@@ -12,8 +12,13 @@ export const BRAND_TITLE = BRAND
 export const LOGO =
   LOCALE === 'ar'
     ? { src: '/logo/bannaa-icon.svg', ratio: 1, word: { src: '/logo/bannaa-word.svg', ratio: 1464 / 1294, scale: 1.25 } }
-    : { src: '/logo/tensquads.svg', ratio: 72 / 64, word: null }
-export const FAVICON = LOCALE === 'ar' ? '/logo/bannaa-icon.svg' : '/logo/tensquads-icon.svg'
+    : { src: '/logo/wordmark.svg', ratio: 281.2 / 64, word: null }
+export const FAVICON = LOCALE === 'ar' ? '/logo/bannaa-icon.svg' : '/logo/favicon.svg'
+/** PNG fallback and home-screen icon. The Arabic brand has no raster set yet. */
+export const FAVICON_PNG = LOCALE === 'ar' ? null : '/logo/favicon-32.png'
+export const TOUCH_ICON = LOCALE === 'ar' ? null : '/logo/apple-touch-icon.png'
+/** The English logo is one lockup (mark + wordmark); the Arabic one is icon + word. */
+export const LOGO_ALT = LOGO.word ? '' : BRAND
 
 /** Pixel sizes for the mark and (Arabic) wordmark at a given base height. */
 export const logoSize = (h: number) => ({ width: Math.round(h * LOGO.ratio), height: h })
